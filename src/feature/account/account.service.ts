@@ -1,26 +1,70 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAccountDto } from './dto/create-account.dto';
-import { UpdateAccountDto } from './dto/update-account.dto';
+import { Account } from './entities/account.entity';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/postgresql';
+import { RequiredEntityData } from '@mikro-orm/core';
+import { hash } from '../../common/utils';
+import { AccountType } from '../../common/enum';
 
 @Injectable()
 export class AccountService {
-  create(createAccountDto: CreateAccountDto) {
-    return 'This action adds a new account';
+  constructor(
+    @InjectRepository(Account)
+    private readonly accountRepo: EntityRepository<Account>,
+  ) {}
+
+  findByUsernameEmailOrPhoneNumber(
+    data: string,
+    type: AccountType,
+  ): Promise<Account> {
+    return this.accountRepo.findOneOrFail(
+      {
+        $and: [
+          {
+            $or: [
+              {
+                email: data,
+              },
+              {
+                username: data,
+              },
+              {
+                phoneNumber: data,
+              },
+            ],
+          },
+          {
+            type,
+          },
+        ],
+      },
+      {
+        fields: [
+          'id',
+          'email',
+          'username',
+          'password',
+          'phoneNumber',
+          'type',
+          'isVerified',
+          'createdAt',
+          'updatedAt',
+        ],
+      },
+    );
   }
 
-  findAll() {
-    return `This action returns all account`;
+  findByPk(id: number): Promise<Account> {
+    return this.accountRepo.findOneOrFail({ id });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} account`;
-  }
-
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} account`;
+  async create(
+    data: RequiredEntityData<Account>,
+    isVerified = false,
+  ): Promise<Account> {
+    data.password = await hash(data.password);
+    const account = this.accountRepo.create({ ...data, isVerified });
+    await this.accountRepo.persistAndFlush(account);
+    return account;
   }
 }

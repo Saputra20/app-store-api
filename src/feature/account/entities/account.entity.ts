@@ -34,6 +34,7 @@ export class Account extends BaseEntity {
 
   @Property({
     type: 'varchar',
+    hidden: true,
   })
   password!: string;
 
@@ -45,6 +46,7 @@ export class Account extends BaseEntity {
 
   @Property({
     type: 'timestamptz',
+    nullable: true,
   })
   lastActive!: Date;
 }

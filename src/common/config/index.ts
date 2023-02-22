@@ -4,6 +4,9 @@ export default () => {
   const {
     APP_PORT,
     APP_BASE_URL,
+    APP_SECRET_KEY,
+    APP_ACCESS_TOKEN_DURATION,
+    APP_REFRESH_TOKEN_DURATION,
     DATABASE_USER,
     DATABASE_PASSWORD,
     DATABASE_HOST,
@@ -23,6 +26,9 @@ export default () => {
     },
     app: <IAppConfig>{
       baseUrl: APP_BASE_URL,
+      secretKey: APP_SECRET_KEY,
+      accessTokenDuration: APP_ACCESS_TOKEN_DURATION,
+      refreshTokenDuration: APP_REFRESH_TOKEN_DURATION,
       port: +APP_PORT || 3000,
     },
   };

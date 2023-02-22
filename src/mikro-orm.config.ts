@@ -4,7 +4,6 @@ import config from './common/config';
 export default function () {
   const db = config().database;
   return <MikroOrmModuleSyncOptions>{
-    registerRequestContext: false,
     dbName: db.name,
     migrations: {
       path: 'dist/database/migration',

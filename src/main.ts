@@ -12,6 +12,9 @@ async function bootstrap() {
   // Common middleware
   app.use(bodyParser.json({ limit: '10mb' }));
 
+  // Security
+  app.enableCors();
+
   await app.listen(appConfig.port);
 }
 bootstrap();
