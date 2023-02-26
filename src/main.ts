@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { IAppConfig } from './common/config/interface';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
@@ -14,6 +15,14 @@ async function bootstrap() {
 
   // Security
   app.enableCors();
+
+  const config = new DocumentBuilder()
+    .setTitle('Documentation App Store API')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('documentations', app, document);
 
   await app.listen(appConfig.port);
 }

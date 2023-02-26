@@ -1,8 +1,11 @@
-import { Index, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, Index, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
 import { BaseEntity } from '../../../common/entity';
 import { Account } from '../../account/entities/account.entity';
 import { Merchant } from '../../merchant/entities/merchant.entity';
 
+@Entity({
+  tableName: 'customers',
+})
 export class Customer extends BaseEntity {
   @Property({
     type: 'varchar',
@@ -30,9 +33,6 @@ export class Customer extends BaseEntity {
   })
   address!: string;
 
-  @ManyToOne(() => Account)
+  @OneToOne(() => Account)
   account: Account;
-
-  @ManyToOne(() => Merchant)
-  merchant: Merchant;
 }

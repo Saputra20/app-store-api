@@ -1,7 +1,10 @@
-import { Index, ManyToOne, Property, Unique } from '@mikro-orm/core';
+import { Entity, Index, ManyToOne, Property, Unique } from '@mikro-orm/core';
 import { BaseEntity } from '../../../common/entity';
 import { Owner } from '../../owner/entities/owner.entity';
 
+@Entity({
+  tableName: 'merchants',
+})
 export class Merchant extends BaseEntity {
   @Property({
     type: 'varchar',

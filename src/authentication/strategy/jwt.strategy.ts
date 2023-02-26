@@ -24,6 +24,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, JWT_AUTH) {
   async validate(payload: IJwtPayload, done: VerifiedCallback) {
     if (payload.type !== TokenType.ACCESS)
       return done(new UnauthorizedException());
-    return this.accountService.findByPk(+payload.sub);
+    return this.accountService.findByPk(
+      payload.sub as string,
+      payload.accountType,
+    );
   }
 }

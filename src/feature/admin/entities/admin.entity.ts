@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, OneToOne, Property } from '@mikro-orm/core';
 import { BaseEntity } from '../../../common/entity';
 import { Role } from '../../role/entities/role.entity';
 import { Account } from '../../account/entities/account.entity';
@@ -20,6 +20,6 @@ export class Admin extends BaseEntity {
   @ManyToOne(() => Role)
   role: Role;
 
-  @ManyToOne(() => Account)
+  @OneToOne(() => Account)
   account: Account;
 }

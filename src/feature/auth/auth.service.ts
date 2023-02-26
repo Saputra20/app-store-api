@@ -6,7 +6,6 @@ import { IAppConfig } from '../../common/config/interface';
 import { IJwtPayload } from '../../authentication/interface/jwt-payload.interface';
 import { TokenType } from '../../common/enum/token-type.enum';
 import { Account } from '../account/entities/account.entity';
-import { RegisterDto } from '../auth/dto';
 import { AccountType } from '../../common/enum';
 
 @Injectable()
@@ -77,9 +76,5 @@ export class AuthService {
       .findByUsernameEmailOrPhoneNumber(data, type)
       .catch(() => null);
     return account;
-  }
-
-  async register(registerDto: RegisterDto): Promise<Account> {
-    return this.accountService.create(registerDto);
   }
 }

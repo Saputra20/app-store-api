@@ -1,4 +1,12 @@
-import { Entity, Index, ManyToOne, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  Index,
+  OneToMany,
+  OneToOne,
+  Property,
+} from '@mikro-orm/core';
+import { Merchant } from '../../merchant/entities/merchant.entity';
 import { BaseEntity } from '../../../common/entity';
 import { Account } from '../../account/entities/account.entity';
 
@@ -32,6 +40,9 @@ export class Owner extends BaseEntity {
   })
   address!: string;
 
-  @ManyToOne(() => Account)
+  @OneToOne(() => Account)
   account: Account;
+
+  @OneToMany(() => Merchant, (merchant) => merchant.owner)
+  merchants = new Collection<Merchant>(this);
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Account } from './entities/account.entity';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { RequiredEntityData } from '@mikro-orm/core';
+import { LoadStrategy, RequiredEntityData } from '@mikro-orm/core';
 import { hash } from '../../common/utils';
 import { AccountType } from '../../common/enum';
 
@@ -54,8 +54,33 @@ export class AccountService {
     );
   }
 
-  findByPk(id: number): Promise<Account> {
-    return this.accountRepo.findOneOrFail({ id });
+  async findByPk(id: string, type: number): Promise<Account> {
+    let populate = null;
+
+    switch (type) {
+      case AccountType.ADMIN:
+        populate = 'admin';
+        break;
+      case AccountType.OWNER:
+        populate = 'owner';
+        break;
+      case AccountType.CUSTOMER:
+        populate = 'customer';
+        break;
+      case AccountType.EMPLOYEE:
+        populate = 'employee';
+        break;
+    }
+
+    const user = await this.accountRepo
+      .createQueryBuilder()
+      .select('*')
+      .where({ id })
+      .populate([{ strategy: LoadStrategy.JOINED, field: populate }])
+      .getSingleResult();
+
+    delete user.password;
+    return user;
   }
 
   async create(
@@ -66,5 +91,9 @@ export class AccountService {
     const account = this.accountRepo.create({ ...data, isVerified });
     await this.accountRepo.persistAndFlush(account);
     return account;
+  }
+
+  async findByUsername(username: string, type: any): Promise<Account> {
+    return this.accountRepo.findOneOrFail({ username, type });
   }
 }

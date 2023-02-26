@@ -7,6 +7,7 @@ import { LocalAuthGuard, JwtAuthGuard } from '../../authentication/guard';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { IAppConfig } from '../../common/config/interface';
+import { ForgetPasswordListener } from './listener';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { IAppConfig } from '../../common/config/interface';
     JwtStrategy,
     LocalAuthGuard,
     JwtAuthGuard,
+    ForgetPasswordListener,
   ],
 })
 export class AuthModule {}

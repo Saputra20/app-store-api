@@ -1,11 +1,10 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import config from './common/config';
 import mikroOrmConfig from 'src/mikro-orm.config';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AccountModule } from './feature/account/account.module';
 import { RoleModule } from './feature/role/role.module';
 import { SinceModule } from './feature/since/since.module';
@@ -23,6 +22,8 @@ import { AuthModule } from './feature/auth/auth.module';
       load: [config],
     }),
     MikroOrmModule.forRoot(mikroOrmConfig()),
+    EventEmitterModule.forRoot(),
+    AuthModule,
     AccountModule,
     RoleModule,
     SinceModule,
@@ -31,11 +32,9 @@ import { AuthModule } from './feature/auth/auth.module';
     MerchantModule,
     EmployeeModule,
     CustomerModule,
-    AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     {
       provide: APP_PIPE,
       useFactory: () =>

@@ -1,5 +1,6 @@
-import { Entity, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, Property, Unique } from '@mikro-orm/core';
 import { BaseEntity } from '../../../common/entity';
+import { PermissionEnum } from '../../../common/enum';
 
 @Entity({
   tableName: 'roles',
@@ -22,4 +23,11 @@ export class Role extends BaseEntity {
     comment: '1: admin, 2: employee',
   })
   type!: number;
+
+  @Enum({
+    items: () => PermissionEnum,
+    array: true,
+    nullable: false,
+  })
+  permissions?: any[] = [PermissionEnum.DEFAULT];
 }

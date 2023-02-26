@@ -20,5 +20,6 @@ export default function () {
     type: db.dialect,
     entities: ['dist/feature/**/entities/*.entity.js'],
     entitiesTs: ['src/feature/**/entities/*.entity.ts'],
+    debug: true,
   };
 }

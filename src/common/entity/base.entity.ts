@@ -2,7 +2,7 @@ import { Index, PrimaryKey, Property } from '@mikro-orm/core';
 
 export class BaseEntity {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
-  id: number;
+  id: string;
 
   @Property({
     type: 'timestamptz',
