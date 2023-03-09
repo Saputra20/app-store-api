@@ -25,7 +25,10 @@ import {
   ResponseSuccessInterceptor,
   PaginateResponseInterceptor,
 } from 'src/common/interceptor';
-import { NotFoundExceptionFilter } from '../../common/filter';
+import {
+  NotFoundExceptionFilter,
+  UniqueExceptionFilter,
+} from '../../common/filter';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
@@ -35,6 +38,20 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
+  @ApiOperation({ summary: 'Store Admin' })
+  @ApiResponse({ status: 201 })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @UseFilters(NotFoundExceptionFilter)
+  @UseFilters(
+    new UniqueExceptionFilter(
+      'email, username or phone number Already Exists',
+      HttpStatus.BAD_REQUEST,
+    ),
+  )
+  @UseInterceptors(
+    new ResponseSuccessInterceptor(HttpStatus.CREATED, 'success create admin'),
+  )
   @Post()
   create(@Body() createAdminDto: CreateAdminDto) {
     return this.adminService.create(createAdminDto);
@@ -66,13 +83,35 @@ export class AdminController {
     return this.adminService.findOne(id);
   }
 
+  @ApiOperation({ summary: 'Update Admin' })
+  @ApiResponse({ status: 200 })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @UseFilters(NotFoundExceptionFilter)
+  @UseFilters(
+    new UniqueExceptionFilter(
+      'email, username or phone number Already Exists',
+      HttpStatus.BAD_REQUEST,
+    ),
+  )
+  @UseInterceptors(
+    new ResponseSuccessInterceptor(HttpStatus.OK, 'success update admin'),
+  )
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
-    return this.adminService.update(+id, updateAdminDto);
+    return this.adminService.update(id, updateAdminDto);
   }
 
+  @ApiOperation({ summary: 'Delete Admin' })
+  @ApiResponse({ status: 200 })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @UseFilters(NotFoundExceptionFilter)
+  @UseInterceptors(
+    new ResponseSuccessInterceptor(HttpStatus.OK, 'success delete admin'),
+  )
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.adminService.remove(+id);
+    return this.adminService.remove(id);
   }
 }

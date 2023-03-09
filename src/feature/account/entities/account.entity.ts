@@ -1,4 +1,6 @@
 import {
+  BeforeCreate,
+  BeforeUpdate,
   Cascade,
   Entity,
   Index,
@@ -12,6 +14,7 @@ import { Owner } from '../../owner/entities/owner.entity';
 import { Admin } from '../../admin/entities/admin.entity';
 import { Employee } from '../../employee/entities/employee.entity';
 import { Customer } from '../../customer/entities/customer.entity';
+import { hash } from '../../../common/utils';
 
 @Entity({
   tableName: 'accounts',
@@ -85,4 +88,14 @@ export class Account extends BaseEntity {
     cascade: [Cascade.ALL],
   })
   customer?: Customer;
+
+  @BeforeCreate()
+  async hashPassword() {
+    this.password = await hash(this.password);
+  }
+
+  @BeforeUpdate()
+  async updatePassword() {
+    this.password = await hash(this.password);
+  }
 }
