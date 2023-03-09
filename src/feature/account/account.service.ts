@@ -55,32 +55,33 @@ export class AccountService {
   }
 
   async findByPk(id: string, type: number): Promise<Account> {
-    let populate = null;
+    const qb = this.accountRepo.createQueryBuilder('account');
+    qb.select([
+      'account.id',
+      'account.email',
+      'account.username',
+      'account.phoneNumber',
+      'account.isVerified',
+      'account.lastActive',
+    ]);
 
     switch (type) {
       case AccountType.ADMIN:
-        populate = 'admin';
+        qb.joinAndSelect('account.admin', 'admins');
+        qb.joinAndSelect('admins.role', 'roles');
         break;
       case AccountType.OWNER:
-        populate = 'owner';
+        qb.join('account.owner', 'owners');
         break;
       case AccountType.CUSTOMER:
-        populate = 'customer';
+        qb.join('account.customer', 'customers');
         break;
       case AccountType.EMPLOYEE:
-        populate = 'employee';
+        qb.join('account.employee', 'employees');
         break;
     }
 
-    const user = await this.accountRepo
-      .createQueryBuilder()
-      .select('*')
-      .where({ id })
-      .populate([{ strategy: LoadStrategy.JOINED, field: populate }])
-      .getSingleResult();
-
-    delete user.password;
-    return user;
+    return qb.where({ id }).execute();
   }
 
   async create(

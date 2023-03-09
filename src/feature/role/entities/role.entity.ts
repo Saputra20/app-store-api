@@ -1,4 +1,11 @@
-import { Entity, Enum, Property, Unique } from '@mikro-orm/core';
+import {
+  BeforeCreate,
+  BeforeUpdate,
+  Entity,
+  Enum,
+  Property,
+  Unique,
+} from '@mikro-orm/core';
 import { BaseEntity } from '../../../common/entity';
 import { PermissionEnum } from '../../../common/enum';
 
@@ -30,4 +37,14 @@ export class Role extends BaseEntity {
     nullable: false,
   })
   permissions?: any[] = [PermissionEnum.DEFAULT];
+
+  @BeforeCreate()
+  createSlug() {
+    this.slug = this.name.toLowerCase().split(' ').join('-');
+  }
+
+  @BeforeUpdate()
+  updateSlug() {
+    this.slug = this.name.toLowerCase().split(' ').join('-');
+  }
 }

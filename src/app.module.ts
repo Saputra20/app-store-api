@@ -14,6 +14,8 @@ import { MerchantModule } from './feature/merchant/merchant.module';
 import { EmployeeModule } from './feature/employee/employee.module';
 import { CustomerModule } from './feature/customer/customer.module';
 import { AuthModule } from './feature/auth/auth.module';
+import { BullModule } from '@nestjs/bull';
+import { QueueModule } from './queue/queue.module';
 
 @Module({
   imports: [
@@ -24,14 +26,21 @@ import { AuthModule } from './feature/auth/auth.module';
     MikroOrmModule.forRoot(mikroOrmConfig()),
     EventEmitterModule.forRoot(),
     AuthModule,
+    AdminModule,
     AccountModule,
     RoleModule,
     SinceModule,
-    AdminModule,
     OwnerModule,
     MerchantModule,
     EmployeeModule,
     CustomerModule,
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
+    QueueModule,
   ],
   controllers: [],
   providers: [

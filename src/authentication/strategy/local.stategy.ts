@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { AuthService } from '../../feature/auth/auth.service';
@@ -19,9 +19,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       data,
       AccountType[type.toUpperCase()],
     );
-    if (!account) throw new UnauthorizedException('Account not registered');
+    if (!account) throw new BadRequestException('Account not registered');
     if (!(await compareHash(password, account.password)))
-      throw new UnauthorizedException('Incorrect account or password');
+      throw new BadRequestException('Incorrect account or password');
     return account;
   }
 }
