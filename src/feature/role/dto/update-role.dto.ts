@@ -1,4 +1,19 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateRoleDto } from './create-role.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsArray, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { PermissionEnum } from 'src/common/enum';
 
-export class UpdateRoleDto extends PartialType(CreateRoleDto) {}
+export class UpdateRoleDto {
+  @ApiProperty({ description: 'name role' })
+  @IsNotEmpty()
+  name: string;
+
+  @ApiProperty({ description: 'type role' })
+  @IsNotEmpty()
+  @IsNumber()
+  type: number;
+
+  @ApiProperty({ description: 'permission role' })
+  @IsArray()
+  @IsOptional()
+  permissions?: PermissionEnum[] = [PermissionEnum.ALL];
+}
