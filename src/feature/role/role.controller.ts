@@ -34,6 +34,8 @@ import {
   UniqueExceptionFilter,
 } from 'src/common/filter';
 import { AdminService } from '../admin/admin.service';
+import { PermissionEnum } from '../../common/enum';
+import { Permissions } from 'src/authentication/decorator';
 
 @ApiTags('Role Management')
 @Controller('roles')
@@ -47,6 +49,7 @@ export class RoleController {
   @ApiResponse({ status: 201 })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @Permissions(PermissionEnum.ROLE_CREATE)
   @UseFilters(
     new UniqueExceptionFilter('Role Already Exists', HttpStatus.BAD_REQUEST),
   )
@@ -62,6 +65,7 @@ export class RoleController {
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @Permissions(PermissionEnum.ROLE_READ)
   @UseInterceptors(
     new PaginateResponseInterceptor(HttpStatus.OK, 'success get list role'),
   )
@@ -74,6 +78,7 @@ export class RoleController {
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @Permissions(PermissionEnum.ROLE_READ)
   @UseInterceptors(
     new ResponseSuccessInterceptor(HttpStatus.OK, 'success get role'),
   )
@@ -87,6 +92,7 @@ export class RoleController {
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @Permissions(PermissionEnum.ROLE_UPDATE)
   @UseInterceptors(
     new ResponseSuccessInterceptor(HttpStatus.OK, 'success update role'),
   )
@@ -103,6 +109,7 @@ export class RoleController {
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @Permissions(PermissionEnum.ROLE_DELETE)
   @UseInterceptors(
     new ResponseSuccessInterceptor(HttpStatus.OK, 'success update role'),
   )

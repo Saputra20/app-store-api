@@ -16,6 +16,8 @@ import { CustomerModule } from './feature/customer/customer.module';
 import { AuthModule } from './feature/auth/auth.module';
 import { BullModule } from '@nestjs/bull';
 import { QueueModule } from './queue/queue.module';
+import { MiscModule } from './feature/misc/misc.module';
+import { MeModule } from './feature/me/me.module';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { QueueModule } from './queue/queue.module';
       },
     }),
     QueueModule,
+    MiscModule,
+    MeModule,
   ],
   controllers: [],
   providers: [

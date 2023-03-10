@@ -1,0 +1,6 @@
+export enum RolePermissionEnum {
+  ROLE_CREATE = 'ROLE_CREATE',
+  ROLE_READ = 'ROLE_READ',
+  ROLE_UPDATE = 'ROLE_UPDATE',
+  ROLE_DELETE = 'ROLE_DELETE',
+}

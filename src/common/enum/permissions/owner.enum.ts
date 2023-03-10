@@ -1,0 +1,6 @@
+export enum OwnerPermissionEnum {
+  OWNER_CREATE = 'OWNER_CREATE',
+  OWNER_READ = 'OWNER_READ',
+  OWNER_UPDATE = 'OWNER_UPDATE',
+  OWNER_DELETE = 'OWNER_DELETE',
+}

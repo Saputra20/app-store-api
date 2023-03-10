@@ -15,5 +15,5 @@ export class UpdateRoleDto {
   @ApiProperty({ description: 'permission role' })
   @IsArray()
   @IsOptional()
-  permissions?: PermissionEnum[] = [PermissionEnum.ALL];
+  permissions?: any[] = [PermissionEnum.ALL];
 }

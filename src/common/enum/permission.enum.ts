@@ -1,6 +1,19 @@
-export enum PermissionEnum {
-  DEFAULT = 'DEFAULT',
+import {
+  RolePermissionEnum,
+  AdminPermissionEnum,
+  MerchantPermissionEnum,
+  OwnerPermissionEnum,
+} from './permissions';
+
+export enum GeneralPermissionEnum {
   ALL = 'ALL',
-  ADMIN_WRITE = 'ADMIN_WRITE',
-  ADMIN_READ = 'ADMIN_READ',
+  DEFAULT = 'DEFAULT',
 }
+
+export const PermissionEnum = {
+  ...GeneralPermissionEnum,
+  ...RolePermissionEnum,
+  ...AdminPermissionEnum,
+  ...MerchantPermissionEnum,
+  ...OwnerPermissionEnum,
+};

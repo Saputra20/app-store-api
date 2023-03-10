@@ -1,4 +1,12 @@
-import { Entity, Index, ManyToOne, Property, Unique } from '@mikro-orm/core';
+import {
+  BeforeCreate,
+  BeforeUpdate,
+  Entity,
+  Index,
+  ManyToOne,
+  Property,
+  Unique,
+} from '@mikro-orm/core';
 import { BaseEntity } from '../../../common/entity';
 import { Owner } from '../../owner/entities/owner.entity';
 
@@ -51,4 +59,14 @@ export class Merchant extends BaseEntity {
 
   @ManyToOne(() => Owner)
   owner: Owner;
+
+  @BeforeCreate()
+  hookBeforeCreate() {
+    this.slug = this.name.toLowerCase().split(' ').join('-');
+  }
+
+  @BeforeUpdate()
+  hookBeforeUpdate() {
+    this.slug = this.name.toLowerCase().split(' ').join('-');
+  }
 }

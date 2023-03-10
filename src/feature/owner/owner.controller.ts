@@ -33,6 +33,8 @@ import {
   UniqueExceptionFilter,
 } from 'src/common/filter';
 import { MerchantService } from '../merchant/merchant.service';
+import { Permissions } from 'src/authentication/decorator';
+import { PermissionEnum } from 'src/common/enum';
 
 @ApiTags('Owner Management')
 @Controller('owners')
@@ -46,6 +48,7 @@ export class OwnerController {
   @ApiResponse({ status: 201 })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @Permissions(PermissionEnum.OWNER_CREATE)
   @UseFilters(
     new UniqueExceptionFilter(
       'email, username or phone number Already Exists',
@@ -64,6 +67,7 @@ export class OwnerController {
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @Permissions(PermissionEnum.OWNER_READ)
   @UseInterceptors(
     new PaginateResponseInterceptor(HttpStatus.OK, 'success get list owner'),
   )
@@ -76,6 +80,7 @@ export class OwnerController {
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @Permissions(PermissionEnum.OWNER_READ)
   @UseFilters(NotFoundExceptionFilter)
   @UseInterceptors(
     new ResponseSuccessInterceptor(HttpStatus.OK, 'success get owner'),
@@ -89,6 +94,7 @@ export class OwnerController {
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @Permissions(PermissionEnum.OWNER_UPDATE)
   @UseFilters(NotFoundExceptionFilter)
   @UseFilters(
     new UniqueExceptionFilter(
@@ -108,6 +114,7 @@ export class OwnerController {
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @Permissions(PermissionEnum.OWNER_DELETE)
   @UseFilters(NotFoundExceptionFilter)
   @UseInterceptors(
     new ResponseSuccessInterceptor(HttpStatus.OK, 'success delete owner'),

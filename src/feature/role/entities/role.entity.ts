@@ -36,7 +36,7 @@ export class Role extends BaseEntity {
     array: true,
     nullable: false,
   })
-  permissions?: any[] = [PermissionEnum.DEFAULT];
+  permissions?: any[] = [PermissionEnum.ALL];
 
   @BeforeCreate()
   createSlug() {

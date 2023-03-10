@@ -51,10 +51,11 @@ export const generateFindAllWithoutOrder = <T extends object>(
 export const getResultAndPaginate = async <T extends object>(
   qb: QueryBuilder<T>,
   populator?: EntityRepository<T>,
+  relationship?: any[],
 ) => {
   const count = await qb.getCount();
   const rows = await qb.getResult();
-  await populator?.populate(rows, true);
+  await populator?.populate(rows, relationship ? relationship : true);
   return [rows, count] as const;
 };
 
