@@ -2,6 +2,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { DefaultQueryDto, KeywordQueryDto } from 'src/common/dto';
+import { AccountType } from 'src/common/enum';
 import {
   generateFindAllQuery,
   getResultQueryAndPaginate,
@@ -24,7 +25,13 @@ export class OwnerService {
     const { email, phoneNumber, password, username } = createOwnerDto;
     const row = this.ownerRepo.create({
       ...createOwnerDto,
-      account: { email, phoneNumber, password, username, type: 2 },
+      account: {
+        email,
+        phoneNumber,
+        password,
+        username,
+        type: AccountType.OWNER,
+      },
     });
     await this.ownerRepo.persistAndFlush(row);
     return row;

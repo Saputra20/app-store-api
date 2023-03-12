@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   UseInterceptors,
   HttpStatus,
   UseFilters,
@@ -21,13 +20,12 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/authentication/guard';
 import {
   PaginateResponseInterceptor,
   ResponseSuccessInterceptor,
 } from 'src/common/interceptor';
-import { Permissions } from 'src/authentication/decorator';
-import { PermissionEnum } from 'src/common/enum';
+import { Permissions, Roles } from '../../authentication/decorator';
+import { PermissionEnum, AccountType } from 'src/common/enum';
 import {
   NotFoundExceptionFilter,
   UniqueExceptionFilter,
@@ -42,7 +40,7 @@ export class MerchantController {
   @ApiProperty({ description: 'Store Merchant' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.MERCHANT_CREATE)
   @UseFilters(NotFoundExceptionFilter)
   @UseFilters(
@@ -65,7 +63,7 @@ export class MerchantController {
   @ApiProperty({ description: 'Collection Merchant' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.MERCHANT_READ)
   @UseInterceptors(
     new PaginateResponseInterceptor(HttpStatus.OK, 'success get list merchant'),
@@ -78,7 +76,7 @@ export class MerchantController {
   @ApiProperty({ description: 'Detail Merchant' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.MERCHANT_READ)
   @UseFilters(NotFoundExceptionFilter)
   @UseInterceptors(
@@ -92,7 +90,7 @@ export class MerchantController {
   @ApiProperty({ description: 'Update Merchant' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.MERCHANT_UPDATE)
   @UseFilters(NotFoundExceptionFilter)
   @UseFilters(
@@ -115,7 +113,7 @@ export class MerchantController {
   @ApiProperty({ description: 'Delete Merchant' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.MERCHANT_DELETE)
   @UseFilters(NotFoundExceptionFilter)
   @UseInterceptors(

@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   Query,
-  UseGuards,
   UseInterceptors,
   HttpStatus,
   UseFilters,
@@ -24,7 +23,6 @@ import {
 } from '@nestjs/swagger';
 import { KeywordQueryDto } from 'src/common/dto/keyword-query.dto';
 import { DefaultQueryDto } from 'src/common/dto';
-import { JwtAuthGuard } from 'src/authentication/guard';
 import {
   PaginateResponseInterceptor,
   ResponseSuccessInterceptor,
@@ -34,8 +32,8 @@ import {
   UniqueExceptionFilter,
 } from 'src/common/filter';
 import { AdminService } from '../admin/admin.service';
-import { PermissionEnum } from '../../common/enum';
-import { Permissions } from 'src/authentication/decorator';
+import { AccountType, PermissionEnum } from '../../common/enum';
+import { Permissions, Roles } from 'src/authentication/decorator';
 
 @ApiTags('Role Management')
 @Controller('roles')
@@ -48,7 +46,7 @@ export class RoleController {
   @ApiProperty({ description: 'Create Role' })
   @ApiResponse({ status: 201 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.ROLE_CREATE)
   @UseFilters(
     new UniqueExceptionFilter('Role Already Exists', HttpStatus.BAD_REQUEST),
@@ -64,7 +62,7 @@ export class RoleController {
   @ApiProperty({ description: 'Collection Role' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.ROLE_READ)
   @UseInterceptors(
     new PaginateResponseInterceptor(HttpStatus.OK, 'success get list role'),
@@ -77,7 +75,7 @@ export class RoleController {
   @ApiProperty({ description: 'Detail Role' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.ROLE_READ)
   @UseInterceptors(
     new ResponseSuccessInterceptor(HttpStatus.OK, 'success get role'),
@@ -91,7 +89,7 @@ export class RoleController {
   @ApiProperty({ description: 'Update Role' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.ROLE_UPDATE)
   @UseInterceptors(
     new ResponseSuccessInterceptor(HttpStatus.OK, 'success update role'),
@@ -108,7 +106,7 @@ export class RoleController {
   @ApiProperty({ description: 'Update Role' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.ROLE_DELETE)
   @UseInterceptors(
     new ResponseSuccessInterceptor(HttpStatus.OK, 'success update role'),

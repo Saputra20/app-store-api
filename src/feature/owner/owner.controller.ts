@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   UseInterceptors,
   HttpStatus,
   Query,
@@ -22,7 +21,6 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/authentication/guard';
 import {
   PaginateResponseInterceptor,
   ResponseSuccessInterceptor,
@@ -33,8 +31,8 @@ import {
   UniqueExceptionFilter,
 } from 'src/common/filter';
 import { MerchantService } from '../merchant/merchant.service';
-import { Permissions } from 'src/authentication/decorator';
-import { PermissionEnum } from 'src/common/enum';
+import { Permissions, Roles } from 'src/authentication/decorator';
+import { AccountType, PermissionEnum } from 'src/common/enum';
 
 @ApiTags('Owner Management')
 @Controller('owners')
@@ -47,7 +45,7 @@ export class OwnerController {
   @ApiProperty({ description: 'Store Owner' })
   @ApiResponse({ status: 201 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.OWNER_CREATE)
   @UseFilters(
     new UniqueExceptionFilter(
@@ -66,7 +64,7 @@ export class OwnerController {
   @ApiProperty({ description: 'Collection Owner' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.OWNER_READ)
   @UseInterceptors(
     new PaginateResponseInterceptor(HttpStatus.OK, 'success get list owner'),
@@ -79,7 +77,7 @@ export class OwnerController {
   @ApiProperty({ description: 'Detail Owner' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.OWNER_READ)
   @UseFilters(NotFoundExceptionFilter)
   @UseInterceptors(
@@ -93,7 +91,7 @@ export class OwnerController {
   @ApiProperty({ description: 'Update Owner' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.OWNER_UPDATE)
   @UseFilters(NotFoundExceptionFilter)
   @UseFilters(
@@ -113,7 +111,7 @@ export class OwnerController {
   @ApiProperty({ description: 'Delete Owner' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
   @Permissions(PermissionEnum.OWNER_DELETE)
   @UseFilters(NotFoundExceptionFilter)
   @UseInterceptors(

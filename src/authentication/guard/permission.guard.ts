@@ -14,6 +14,7 @@ export class PermissionGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     );
     const user = context.switchToHttp().getRequest().user as Account;
+    if (!user.admin) return false;
     return (
       user.admin.role.permissions.includes(PermissionEnum.ALL) ||
       requiredPermissions.some((p) => user.admin.role.permissions.includes(p))

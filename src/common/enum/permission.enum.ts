@@ -3,6 +3,7 @@ import {
   AdminPermissionEnum,
   MerchantPermissionEnum,
   OwnerPermissionEnum,
+  CustomerPermissionEnum,
 } from './permissions';
 
 export enum GeneralPermissionEnum {
@@ -16,4 +17,5 @@ export const PermissionEnum = {
   ...AdminPermissionEnum,
   ...MerchantPermissionEnum,
   ...OwnerPermissionEnum,
+  ...CustomerPermissionEnum,
 };

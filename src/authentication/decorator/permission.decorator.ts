@@ -1,7 +1,7 @@
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
-import { PermissionGuard } from '../guard/permission.guard';
+import { PermissionGuard } from '../guard';
 
 export const PERMISSION_KEY = 'permission';
 

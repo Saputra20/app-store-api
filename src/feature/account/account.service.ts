@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Account } from './entities/account.entity';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { LoadStrategy, RequiredEntityData } from '@mikro-orm/core';
+import { RequiredEntityData } from '@mikro-orm/core';
 import { hash } from '../../common/utils';
 import { AccountType } from '../../common/enum';
 
@@ -61,6 +61,7 @@ export class AccountService {
       'account.email',
       'account.username',
       'account.phoneNumber',
+      'account.type',
       'account.isVerified',
       'account.lastActive',
     ]);

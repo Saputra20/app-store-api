@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   UseInterceptors,
   HttpStatus,
   Query,
@@ -18,9 +17,10 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/authentication/guard';
+import { Permissions, Roles } from 'src/authentication/decorator';
 import { DefaultQueryDto } from 'src/common/dto';
 import { KeywordQueryDto } from 'src/common/dto/keyword-query.dto';
+import { AccountType, PermissionEnum } from 'src/common/enum';
 import {
   ResponseSuccessInterceptor,
   PaginateResponseInterceptor,
@@ -41,7 +41,8 @@ export class AdminController {
   @ApiOperation({ summary: 'Store Admin' })
   @ApiResponse({ status: 201 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
+  @Permissions(PermissionEnum.ADMIN_CREATE)
   @UseFilters(NotFoundExceptionFilter)
   @UseFilters(
     new UniqueExceptionFilter(
@@ -60,11 +61,12 @@ export class AdminController {
   @ApiOperation({ summary: 'Collection Admin' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @Get()
+  @Roles(AccountType.ADMIN)
+  @Permissions(PermissionEnum.ADMIN_READ)
   @UseInterceptors(
     new PaginateResponseInterceptor(HttpStatus.OK, 'success get list admin'),
   )
+  @Get()
   findAll(@Query() keyword: KeywordQueryDto, @Query() query: DefaultQueryDto) {
     console.log(query);
     return this.adminService.findAll(keyword, query);
@@ -73,7 +75,8 @@ export class AdminController {
   @ApiOperation({ summary: 'Detail Admin' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
+  @Permissions(PermissionEnum.ADMIN_READ)
   @UseFilters(NotFoundExceptionFilter)
   @UseInterceptors(
     new ResponseSuccessInterceptor(HttpStatus.OK, 'success get admin'),
@@ -86,7 +89,8 @@ export class AdminController {
   @ApiOperation({ summary: 'Update Admin' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
+  @Permissions(PermissionEnum.ADMIN_UPDATE)
   @UseFilters(NotFoundExceptionFilter)
   @UseFilters(
     new UniqueExceptionFilter(
@@ -105,7 +109,8 @@ export class AdminController {
   @ApiOperation({ summary: 'Delete Admin' })
   @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(AccountType.ADMIN)
+  @Permissions(PermissionEnum.ADMIN_DELETE)
   @UseFilters(NotFoundExceptionFilter)
   @UseInterceptors(
     new ResponseSuccessInterceptor(HttpStatus.OK, 'success delete admin'),

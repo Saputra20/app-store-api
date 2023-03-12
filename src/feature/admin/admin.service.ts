@@ -3,6 +3,7 @@ import { EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { DefaultQueryDto } from 'src/common/dto';
 import { KeywordQueryDto } from 'src/common/dto/keyword-query.dto';
+import { AccountType } from 'src/common/enum';
 import {
   generateFindAllQuery,
   getResultQueryAndPaginate,
@@ -36,7 +37,7 @@ export class AdminService {
       username,
       phoneNumber,
       password,
-      type: 1,
+      type: AccountType.ADMIN,
       isVerified: true,
     });
 
