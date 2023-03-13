@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { IAppConfig } from './common/config/interface';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as bodyParser from 'body-parser';
+import queueRoute from './queue/route';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,6 +24,8 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('documentations', app, document);
+
+  app.use('/queue-monitor', queueRoute);
 
   await app.listen(appConfig.port);
 }

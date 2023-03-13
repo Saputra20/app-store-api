@@ -15,7 +15,6 @@ import { EmployeeModule } from './feature/employee/employee.module';
 import { CustomerModule } from './feature/customer/customer.module';
 import { AuthModule } from './feature/auth/auth.module';
 import { BullModule } from '@nestjs/bull';
-import { QueueModule } from './queue/queue.module';
 import { MiscModule } from './feature/misc/misc.module';
 import { MeModule } from './feature/me/me.module';
 
@@ -42,7 +41,6 @@ import { MeModule } from './feature/me/me.module';
         port: 6379,
       },
     }),
-    QueueModule,
     MiscModule,
     MeModule,
   ],
