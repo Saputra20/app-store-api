@@ -21,7 +21,8 @@
     "migration:create": "mikro-orm migration:create",
     "migrate:up": "mikro-orm migration:up",
     "migrate:down": "mikro-orm migration:down",
-    "seeder:create": "mikro-orm seeder:create"
+    "seeder:create": "mikro-orm seeder:create",
+    "seed:run": "mikro-orm seeder:run"
   },
   "dependencies": {
     "@bull-board/api": "^4.12.1",
@@ -51,6 +52,8 @@
     "bull-board": "^2.1.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "csv-parse": "^5.3.6",
+    "fs": "^0.0.1-security",
     "mikro-orm": "^5.6.11",
     "nestjs-pino": "^3.1.2",
     "passport": "^0.6.0",

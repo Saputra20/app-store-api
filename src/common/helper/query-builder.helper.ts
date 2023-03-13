@@ -66,3 +66,10 @@ export const getResultQueryAndPaginate = async <T extends object>(
   const rows = await qb.execute();
   return [rows, count] as const;
 };
+
+export const getResultQueryAndWithoutPaginate = async <T extends object>(
+  qb: QueryBuilder<T>,
+) => {
+  const rows = await qb.execute();
+  return rows;
+};
