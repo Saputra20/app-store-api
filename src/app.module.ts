@@ -17,6 +17,7 @@ import { AuthModule } from './feature/auth/auth.module';
 import { BullModule } from '@nestjs/bull';
 import { MiscModule } from './feature/misc/misc.module';
 import { MeModule } from './feature/me/me.module';
+import { StorageModule } from './infrastructure/storage/storage.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { MeModule } from './feature/me/me.module';
     }),
     MiscModule,
     MeModule,
+    StorageModule,
   ],
   controllers: [],
   providers: [

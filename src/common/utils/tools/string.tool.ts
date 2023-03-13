@@ -1,3 +1,5 @@
+import { randomUUID } from 'crypto';
+
 export const toCapital = (string) => {
   const arr = string.split(' ');
   for (let index = 0; index < arr.length; index++) {
@@ -5,4 +7,9 @@ export const toCapital = (string) => {
   }
 
   return arr.join(' ');
+};
+
+export const generateRandomFileName = (mimetype: string) => {
+  const extension = mimetype.split('/').splice(-1)[0];
+  return `${randomUUID()}.${extension}`;
 };
